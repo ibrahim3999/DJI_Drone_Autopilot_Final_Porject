@@ -16,12 +16,9 @@ import androidx.annotation.NonNull;
 import com.dji.sdk.sample.internal.controller.DJISampleApplication;
 import com.dji.sdk.sample.internal.controller.MainActivity;
 import com.dji.sdk.sample.internal.utils.ModuleVerificationUtil;
-import com.dji.sdk.sample.internal.utils.ToastUtils;
 import com.dji.sdk.sample.internal.utils.VideoFeedView;
 import com.dji.sdk.sample.internal.view.PresentableView;
 
-import dji.common.error.DJIError;
-import dji.keysdk.callback.SetCallback;
 import dji.sdk.camera.VideoFeeder;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.flightcontroller.FlightController;
@@ -50,8 +47,8 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     private View coverView;
     private VideoFeeder.PhysicalSourceListener sourceListener;
     protected DJICodecManager codecManager = null;
-    private SetCallback setBandwidthCallback;
-    private MapController mapController;
+    private ILMMapController ILMMapController;
+    private ILMVideoController ILMVideoController;
 
     public ILMRemoteControllerView(Context context) {
         super(context);
@@ -65,8 +62,6 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.view_ilm_remote_controller, this, true);
         initUI();
-
-        mapController.init(this.context, mapView);
     }
 
     private void initUI() {
@@ -92,11 +87,11 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         yaw = findViewById(R.id.textView_ILM_YawInt);
         //--------------------Map--------------------//
         mapView = findViewById(R.id.mapView_ILM);
-        mapController = new MapController(context, mapView);
+        ILMMapController = new ILMMapController(context, mapView);
         //--------------------Video--------------------//
         videoFeedView = findViewById(R.id.videoFeedView_ILM);
         coverView = findViewById(R.id.view_ILM_coverView);
-        videoFeedView.setCoverView(coverView);
+        ILMVideoController = new ILMVideoController(videoFeedView, coverView);
 
         stopbtn.setOnClickListener(this);
         landbtn.setOnClickListener(this);
@@ -117,7 +112,6 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
                 break;
         }
     }
-
     @Override
     public int getDescription() {
         return R.string.component_listview_mobile_remote_controller;
@@ -140,41 +134,6 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         DJISampleApplication.getEventBus().post(new MainActivity.RequestEndFullScreenEvent());
         super.onDetachedFromWindow();
     }
-
-    //*****************************Primary Camera*****************************
-
-    private void initCallbacks() {
-        setBandwidthCallback = new SetCallback() {
-            @Override
-            public void onSuccess() {
-                ToastUtils.setResultToToast("Set key value successfully");
-                if (videoFeedView != null) {
-                    videoFeedView.changeSourceResetKeyFrame();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull DJIError error) {
-                ToastUtils.setResultToToast("Failed to set: " + error.getDescription());
-            }
-        };
-    }
-//    private void setUpListeners() {
-//        sourceListener = new VideoFeeder.PhysicalSourceListener() {
-//            @Override
-//            public void onChange(VideoFeeder.VideoFeed videoFeed, PhysicalSource newPhysicalSource) {
-//                if (videoFeed == VideoFeeder.getInstance().getPrimaryVideoFeed()) {
-//                    String newText = "Primary Source: " + newPhysicalSource.toString();
-//                    ToastUtils.setResultToText(primaryVideoFeedTitle,newText);
-//                }
-//                if (videoFeed == VideoFeeder.getInstance().getSecondaryVideoFeed()) {
-//                    ToastUtils.setResultToText(fpvVideoFeedTitle,"Secondary Source: " + newPhysicalSource.toString());
-//                }
-//            }
-//        };
-//
-//        setVideoFeederListeners(true);
-//    }
 
 
 }
