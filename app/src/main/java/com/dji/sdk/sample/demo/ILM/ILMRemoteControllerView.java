@@ -1,8 +1,11 @@
 package com.dji.sdk.sample.demo.ILM;
 
 import android.content.Context;
+
 import com.dji.sdk.sample.R;
+
 import org.osmdroid.views.MapView;
+
 import android.app.Service;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
@@ -29,19 +32,6 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     private Button goTobtn;
     private Button stopbtn;
     private Button landbtn;
-    private TextView battery;
-    private TextView x;
-    private TextView y;
-    private TextView z;
-    private TextView latitude;
-    private TextView longtitude;
-    private TextView altitude;
-    private TextView date;
-    private TextView speed;
-    private TextView distance;
-    private TextView pitch;
-    private TextView roll;
-    private TextView yaw;
     private SurfaceView surfaceView;
     private VideoFeedView videoFeedView;
     private View coverView;
@@ -49,12 +39,12 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     protected DJICodecManager codecManager = null;
     private ILMMapController ILMMapController;
     private ILMVideoController ILMVideoController;
+    private ILMStatusBar ILMStatusBar;
 
     public ILMRemoteControllerView(Context context) {
         super(context);
         this.context = context;
         init(context);
-        //setUpListeners();
     }
 
     private void init(Context context) {
@@ -69,22 +59,8 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         landbtn = findViewById(R.id.btn_ILM_Land);
         goTobtn = findViewById(R.id.btn_ILM_GoTo);
 
-        x = findViewById(R.id.textView_ILM_XInt);
-        y = findViewById(R.id.textView_ILM_YInt);
-        z = findViewById(R.id.textView_ILM_ZInt);
-
-        latitude = findViewById(R.id.textView_ILM_Latitude);
-        longtitude = findViewById(R.id.textView_ILM_Longitude);
-        altitude = findViewById(R.id.textView_ILM_Altitude);
-
-        speed = findViewById(R.id.textView_ILM_SpeedInt);
-        distance = findViewById(R.id.textView_ILM_DistanceInt);
-        battery = findViewById(R.id.textView_ILM_BatteryInt);
-        date = findViewById(R.id.textView_ILM_DateInt);
-
-        pitch = findViewById(R.id.textView_ILM_PitchInt);
-        roll = findViewById(R.id.textView_ILM_RollTxt);
-        yaw = findViewById(R.id.textView_ILM_YawInt);
+        ILMStatusBar = new ILMStatusBar(context);
+        addView(ILMStatusBar);
         //--------------------Map--------------------//
         mapView = findViewById(R.id.mapView_ILM);
         ILMMapController = new ILMMapController(context, mapView);
@@ -114,7 +90,7 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     }
     @Override
     public int getDescription() {
-        return R.string.component_listview_mobile_remote_controller;
+        return R.string.component_listview_ilm_remote_controller;
     }
 
     @NonNull
@@ -134,7 +110,6 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         DJISampleApplication.getEventBus().post(new MainActivity.RequestEndFullScreenEvent());
         super.onDetachedFromWindow();
     }
-
 
 }
 
