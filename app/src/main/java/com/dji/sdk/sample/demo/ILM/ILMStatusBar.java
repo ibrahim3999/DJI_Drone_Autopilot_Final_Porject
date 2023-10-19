@@ -29,7 +29,6 @@ import dji.common.battery.BatteryState;
 import dji.common.flightcontroller.FlightControllerState;
 import dji.common.flightcontroller.LocationCoordinate3D;
 import dji.sdk.flightcontroller.FlightController;
-import dji.sdk.flighthub.model.FlightPathNode;
 import dji.sdk.gimbal.Gimbal;
 
 public class ILMStatusBar extends RelativeLayout implements PresentableView {
@@ -49,12 +48,13 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
     private TextView yaw;
     private Handler dateUpdateHandler = new Handler();
     private Handler locationUpdateHandler = new Handler();
-    FlightPathNode flightPathNode = new FlightPathNode();
 
     public ILMStatusBar(Context context) {
         super(context);
         this.context = context;
         init(context);
+//        initCsvFile();
+//        startCsvUpdates();
     }
 
     private void init(Context context) {

@@ -65,9 +65,9 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         mapView = findViewById(R.id.mapView_ILM);
         ILMMapController = new ILMMapController(context, mapView);
         //--------------------Video--------------------//
-        videoFeedView = findViewById(R.id.videoFeedView_ILM);
-        coverView = findViewById(R.id.view_ILM_coverView);
-        ILMVideoController = new ILMVideoController(videoFeedView, coverView);
+//        videoFeedView = findViewById(R.id.videoFeedView_ILM);
+//        coverView = findViewById(R.id.view_ILM_coverView);
+//        ILMVideoController = new ILMVideoController(videoFeedView, coverView);
 
         stopbtn.setOnClickListener(this);
         landbtn.setOnClickListener(this);
@@ -88,6 +88,7 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
                 break;
         }
     }
+
     @Override
     public int getDescription() {
         return R.string.component_listview_ilm_remote_controller;
