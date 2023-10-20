@@ -2,28 +2,40 @@ package com.dji.sdk.sample.demo.ILM;
 
 import static com.google.android.gms.internal.zzahn.runOnUiThread;
 
+import android.Manifest;
 import android.content.Context;
 
 import com.dji.sdk.sample.R;
 
 import android.app.Service;
+import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.dji.sdk.sample.internal.controller.DJISampleApplication;
 import com.dji.sdk.sample.internal.controller.MainActivity;
 import com.dji.sdk.sample.internal.utils.ModuleVerificationUtil;
 import com.dji.sdk.sample.internal.view.PresentableView;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import dji.common.battery.BatteryState;
 import dji.common.flightcontroller.FlightControllerState;
@@ -53,8 +65,6 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
         super(context);
         this.context = context;
         init(context);
-//        initCsvFile();
-//        startCsvUpdates();
     }
 
     private void init(Context context) {
@@ -242,10 +252,6 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
         updateTimeRunnable.run();
     }
 
-    public Context ILMgetContext() {
-        return context;
-    }
-
     public String getBattery() {
         return battery.toString();
     }
@@ -258,9 +264,7 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
         return y.toString();
     }
 
-    public String getILMZ() {
-        return z.toString();
-    }
+    public String getILMZ() {return z.toString();}
 
     public String getLatitude() {
         return latitude.toString();

@@ -12,7 +12,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -37,9 +36,10 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     private View coverView;
     private VideoFeeder.PhysicalSourceListener sourceListener;
     protected DJICodecManager codecManager = null;
-    private ILMMapController ILMMapController;
-    private ILMVideoController ILMVideoController;
-    private ILMStatusBar ILMStatusBar;
+    private ILMMapController mapController;
+    private ILMVideoController videoController;
+    private ILMStatusBar statusBar;
+    private ILMCSVLog csvLog;
 
     public ILMRemoteControllerView(Context context) {
         super(context);
@@ -58,12 +58,15 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         stopbtn = findViewById(R.id.btn_ILM_Stop);
         landbtn = findViewById(R.id.btn_ILM_Land);
         goTobtn = findViewById(R.id.btn_ILM_GoTo);
-
-        ILMStatusBar = new ILMStatusBar(context);
-        addView(ILMStatusBar);
+        //--------------------Status Bar--------------------//
+        statusBar = new ILMStatusBar(context);
+        addView(statusBar);
+        //--------------------CSV Log--------------------//
+        csvLog = new ILMCSVLog(context, statusBar);
+        csvLog.createLogBrain();
         //--------------------Map--------------------//
         mapView = findViewById(R.id.mapView_ILM);
-        ILMMapController = new ILMMapController(context, mapView);
+        mapController = new ILMMapController(context, mapView);
         //--------------------Video--------------------//
 //        videoFeedView = findViewById(R.id.videoFeedView_ILM);
 //        coverView = findViewById(R.id.view_ILM_coverView);
@@ -108,6 +111,7 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
 
     @Override
     protected void onDetachedFromWindow() {
+        csvLog.closeLogBrain();
         DJISampleApplication.getEventBus().post(new MainActivity.RequestEndFullScreenEvent());
         super.onDetachedFromWindow();
     }
