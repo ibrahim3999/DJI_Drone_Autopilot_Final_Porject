@@ -2,20 +2,24 @@ package com.dji.sdk.sample.demo.ILM;
 
 import static com.google.android.gms.internal.zzahn.runOnUiThread;
 
+import android.Manifest;
 import android.content.Context;
 
 import com.dji.sdk.sample.R;
 
 import android.app.Service;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.util.Log;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.dji.sdk.sample.internal.controller.DJISampleApplication;
 import com.dji.sdk.sample.internal.controller.MainActivity;
@@ -30,12 +34,13 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import dji.common.battery.BatteryState;
 import dji.common.flightcontroller.FlightControllerState;
 import dji.common.flightcontroller.LocationCoordinate3D;
 import dji.sdk.flightcontroller.FlightController;
-import dji.sdk.flighthub.model.FlightPathNode;
 import dji.sdk.gimbal.Gimbal;
 
 public class ILMStatusBar extends RelativeLayout implements PresentableView {
@@ -55,17 +60,11 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
     private TextView yaw;
     private Handler dateUpdateHandler = new Handler();
     private Handler locationUpdateHandler = new Handler();
-    FlightPathNode flightPathNode = new FlightPathNode();
-
-    private Handler csvUpdateHandler;
-    private File csvFile;
 
     public ILMStatusBar(Context context) {
         super(context);
         this.context = context;
         init(context);
-//        initCsvFile();
-//        startCsvUpdates();
     }
 
     private void init(Context context) {
@@ -253,10 +252,6 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
         updateTimeRunnable.run();
     }
 
-    public Context ILMgetContext() {
-        return context;
-    }
-
     public String getBattery() {
         return battery.toString();
     }
@@ -269,9 +264,7 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
         return y.toString();
     }
 
-    public String getILMZ() {
-        return z.toString();
-    }
+    public String getILMZ() {return z.toString();}
 
     public String getLatitude() {
         return latitude.toString();
@@ -309,65 +302,4 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
         return yaw.toString();
     }
 
-//    private void initCsvFile() {
-//        File directory = new File(Environment.getExternalStorageDirectory(), "AircraftData");
-//        if (!directory.exists()) {
-//            if (!directory.mkdirs()) {
-//                Log.e("ILMStatusBar", "Failed to create directory for CSV file.");
-//                return;
-//            }
-//        }
-//
-//        String csvFileName = "aircraft_data.csv";
-//        csvFile = new File(directory, csvFileName);
-//
-//        if (!csvFile.exists()) {
-//            try {
-//                if (!csvFile.createNewFile()) {
-//                    Log.e("ILMStatusBar", "Failed to create CSV file.");
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    private void startCsvUpdates() {
-//        HandlerThread handlerThread = new HandlerThread("CsvUpdateThread");
-//        handlerThread.start();
-//        csvUpdateHandler = new Handler(handlerThread.getLooper());
-//
-//        csvUpdateHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                uploadToCsv();
-//                csvUpdateHandler.postDelayed(this, 100); // Update every 100 milliseconds (10 times per second)
-//            }
-//        }, 100);
-//    }
-//
-//    public void uploadToCsv() {
-//        try {
-//            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-//            DecimalFormat decimalFormat = new DecimalFormat("0.00000");
-//
-//            String formattedDateTime = dateFormat.format(new Date());
-//
-//            FlightController flightController = ModuleVerificationUtil.getFlightController();
-//            LocationCoordinate3D aircraftLocation = flightController.getState().getAircraftLocation();
-//            double lat = aircraftLocation.getLatitude();
-//            double lon = aircraftLocation.getLongitude();
-//            double alt = aircraftLocation.getAltitude();
-//
-//            String csvData = String.format(Locale.getDefault(), "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-//                    formattedDateTime, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0);
-//
-//            FileWriter csvWriter = new FileWriter(csvFile, true); // Append to existing file
-//            csvWriter.write(csvData);
-//            csvWriter.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 }
