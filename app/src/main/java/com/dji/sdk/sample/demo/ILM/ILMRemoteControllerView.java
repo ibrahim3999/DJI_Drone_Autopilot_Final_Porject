@@ -65,9 +65,9 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         mapView = findViewById(R.id.mapView_ILM);
         ILMMapController = new ILMMapController(context, mapView);
         //--------------------Video--------------------//
-        videoFeedView = findViewById(R.id.videoFeedView_ILM);
-        coverView = findViewById(R.id.view_ILM_coverView);
-        ILMVideoController = new ILMVideoController(videoFeedView, coverView);
+//        videoFeedView = findViewById(R.id.videoFeedView_ILM);
+//        coverView = findViewById(R.id.view_ILM_coverView);
+//        ILMVideoController = new ILMVideoController(videoFeedView, coverView);
 
         stopbtn.setOnClickListener(this);
         landbtn.setOnClickListener(this);
@@ -77,8 +77,10 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     @Override
     public void onClick(View v) {
         FlightController flightController = ModuleVerificationUtil.getFlightController();
+
         switch (v.getId()) {
             case R.id.btn_ILM_Stop:
+
                 break;
             case R.id.btn_ILM_Land:
                 break;
