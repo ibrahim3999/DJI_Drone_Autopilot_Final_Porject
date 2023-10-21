@@ -1,26 +1,30 @@
 package com.dji.sdk.sample.demo.ILM;
 
-import android.content.Context;
-
-import com.dji.sdk.sample.R;
-
-import org.osmdroid.views.MapView;
-
 import android.app.Service;
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 
+
+import com.dji.sdk.sample.R;
 import com.dji.sdk.sample.internal.controller.DJISampleApplication;
 import com.dji.sdk.sample.internal.controller.MainActivity;
 import com.dji.sdk.sample.internal.utils.ModuleVerificationUtil;
 import com.dji.sdk.sample.internal.utils.VideoFeedView;
 import com.dji.sdk.sample.internal.view.PresentableView;
 
+import org.osmdroid.views.MapView;
+
+import androidx.annotation.NonNull;
+import dji.common.error.DJIError;
+
+import dji.common.flightcontroller.virtualstick.FlightControlData;
+import dji.common.util.CommonCallbacks;
 import dji.sdk.camera.VideoFeeder;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.flightcontroller.FlightController;
@@ -86,6 +90,18 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         }
         switch (v.getId()) {
             case R.id.btn_ILM_Stop:
+                flightController.sendVirtualStickFlightControlData(new FlightControlData(0,0,0,0), new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(DJIError error) {
+                        if (error != null) {
+                            // Handle error if setting virtual stick data fails
+                            Log.e("FlightController", "Error during stop: " + error.getDescription());
+                        } else {
+                            // Aircraft movement stopped successfully
+                            Log.i("FlightController", "Aircraft movement stopped successfully");
+                        }
+                    }
+                });
                 break;
             case R.id.btn_ILM_Land:
                 break;
