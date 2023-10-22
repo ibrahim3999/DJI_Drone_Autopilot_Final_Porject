@@ -2,41 +2,30 @@ package com.dji.sdk.sample.demo.ILM;
 
 import static com.google.android.gms.internal.zzahn.runOnUiThread;
 
-import android.Manifest;
 import android.content.Context;
 
 import com.dji.sdk.sample.R;
 
 import android.app.Service;
-import android.content.pm.PackageManager;
-import android.os.Environment;
+
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.dji.sdk.sample.internal.controller.DJISampleApplication;
 import com.dji.sdk.sample.internal.controller.MainActivity;
 import com.dji.sdk.sample.internal.utils.ModuleVerificationUtil;
 import com.dji.sdk.sample.internal.view.PresentableView;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import dji.common.battery.BatteryState;
 import dji.common.flightcontroller.FlightControllerState;
@@ -127,8 +116,6 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
             @Override
             public void run() {
                 String formattedDateTime = dateFormat.format(new Date());
-
-
                 if (date != null) {
                     date.setText(formattedDateTime);
                 }

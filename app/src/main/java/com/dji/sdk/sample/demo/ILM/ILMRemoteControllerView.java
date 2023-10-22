@@ -88,10 +88,8 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     @Override
     public void onClick(View v) {
         FlightController flightController = ModuleVerificationUtil.getFlightController();
-
         switch (v.getId()) {
             case R.id.btn_ILM_Stop:
-
                 break;
             case R.id.btn_ILM_Land:
                 break;
