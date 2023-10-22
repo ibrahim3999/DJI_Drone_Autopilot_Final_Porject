@@ -112,21 +112,6 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
                 });
                 break;
             case R.id.btn_ILM_Land:
-                // land  the aircarft
-                flightController.startLanding(new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(DJIError djiError) {
-                        if(djiError!=null){
-                            Log.e("FlightController", "Error during landing: " + djiError.getDescription());
-                        }
-                        else{
-                            // Landing started successfully
-                            Log.i("FlightController", "Landing started successfully");
-                        }
-
-                    }
-                });
-
                 break;
             case R.id.btn_ILM_GoTo:
                 break;
