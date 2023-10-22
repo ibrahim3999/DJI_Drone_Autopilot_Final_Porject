@@ -58,20 +58,28 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
         stopbtn = findViewById(R.id.btn_ILM_Stop);
         landbtn = findViewById(R.id.btn_ILM_Land);
         goTobtn = findViewById(R.id.btn_ILM_GoTo);
-        //--------------------Status Bar--------------------//
+        //<<====================Status Bar====================>>//
         statusBar = new ILMStatusBar(context);
         addView(statusBar);
-        //--------------------CSV Log--------------------//
+        //<<====================CSV Log====================>>//
         csvLog = new ILMCSVLog(context, statusBar);
         csvLog.createLogBrain();
-        //--------------------Map--------------------//
+        //<<====================Map====================>>//
         mapView = findViewById(R.id.mapView_ILM);
         mapController = new ILMMapController(context, mapView);
-        //--------------------Video--------------------//
-//        videoFeedView = findViewById(R.id.videoFeedView_ILM);
-//        coverView = findViewById(R.id.view_ILM_coverView);
-//        ILMVideoController = new ILMVideoController(videoFeedView, coverView);
-
+        //<<====================Video====================>>//
+        videoFeedView = findViewById(R.id.videoFeedView_ILM);
+        coverView = findViewById(R.id.view_ILM_coverView);
+        videoController = new ILMVideoController(videoFeedView, coverView);
+        videoController.displayVideo();
+        //<<====================Status Bar Updates====================>>//
+        statusBar.updateDateTime();
+        statusBar.updateBattery();
+        statusBar.updateSpeed();
+        statusBar.updateXYZ();
+        statusBar.updateLatitudeLongitude();
+        statusBar.updatePitchRollYaw();
+        //<<====================Buttons====================>>//
         stopbtn.setOnClickListener(this);
         landbtn.setOnClickListener(this);
         goTobtn.setOnClickListener(this);
@@ -111,7 +119,7 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
 
     @Override
     protected void onDetachedFromWindow() {
-        csvLog.closeLogBrain();
+        csvLog.closeLogBrain();     //Closing CSV
         DJISampleApplication.getEventBus().post(new MainActivity.RequestEndFullScreenEvent());
         super.onDetachedFromWindow();
     }

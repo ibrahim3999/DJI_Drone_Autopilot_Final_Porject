@@ -69,7 +69,7 @@ public class ILMCSVLog {
     private void updateCSVInfo() {
         if (writer != null) {
             try {
-                writer.append(statusBar.getDate()).append("\n").
+                writer.append(statusBar.getDate()).append(",").
                         append(statusBar.getBattery()).append(",").
                         append(statusBar.getSpeed()).append(",").
                         append(statusBar.getDistance()).append(",").

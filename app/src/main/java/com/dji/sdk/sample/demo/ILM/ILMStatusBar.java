@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,13 +76,17 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
     }
 
     private void initUI() {
+
         x = findViewById(R.id.textView_ILM_XInt);
         y = findViewById(R.id.textView_ILM_YInt);
         z = findViewById(R.id.textView_ILM_ZInt);
 
-        latitude = findViewById(R.id.textView_ILM_Latitude);
-        longitude = findViewById(R.id.textView_ILM_Longitude);
-        altitude = findViewById(R.id.textView_ILM_Altitude);
+        // Inflate the view_ilm_remote_controller layout
+        LayoutInflater remoteControllerInflater = (LayoutInflater) context.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+        View remoteControllerView = remoteControllerInflater.inflate(R.layout.view_ilm_remote_controller, this, false);
+        latitude = remoteControllerView.findViewById(R.id.textView_ILM_Latitude);
+        longitude = remoteControllerView.findViewById(R.id.textView_ILM_Longitude);
+        altitude = remoteControllerView.findViewById(R.id.textView_ILM_Altitude);
 
         speed = findViewById(R.id.textView_ILM_SpeedInt);
         distance = findViewById(R.id.textView_ILM_DistanceInt);
@@ -91,13 +96,6 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
         pitch = findViewById(R.id.textView_ILM_PitchInt);
         roll = findViewById(R.id.textView_ILM_RollTxt);
         yaw = findViewById(R.id.textView_ILM_YawInt);
-
-        updateDateTime();
-//        updateBattery();
-//        updateSpeed();
-//        updateXYZ();
-//        updateLaLoAltitude();
-//        updatePitchRollYaw();
     }
 
     @Override
@@ -253,53 +251,55 @@ public class ILMStatusBar extends RelativeLayout implements PresentableView {
     }
 
     public String getBattery() {
-        return battery.toString();
+        return battery.getText().toString();
     }
 
     public String getILMX() {
-        return x.toString();
+        return x.getText().toString();
     }
 
     public String getILMY() {
-        return y.toString();
+        return y.getText().toString();
     }
 
-    public String getILMZ() {return z.toString();}
+    public String getILMZ() {
+        return z.getText().toString();
+    }
 
     public String getLatitude() {
-        return latitude.toString();
+        return (latitude.getText()).subSequence(10, latitude.getText().length()).toString();
     }
 
     public String getLongitude() {
-        return longitude.toString();
+        return (longitude.getText()).subSequence(11, longitude.getText().length()).toString();
     }
 
     public String getAltitude() {
-        return altitude.toString();
+        return (altitude.getText()).subSequence(10, altitude.getText().length()).toString();
     }
 
     public String getDate() {
-        return date.toString();
+        return date.getText().toString();
     }
 
     public String getSpeed() {
-        return speed.toString();
+        return speed.getText().toString();
     }
 
     public String getDistance() {
-        return distance.toString();
+        return distance.getText().toString();
     }
 
     public String getPitch() {
-        return pitch.toString();
+        return pitch.getText().toString();
     }
 
     public String getRoll() {
-        return roll.toString();
+        return roll.getText().toString();
     }
 
     public String getYaw() {
-        return yaw.toString();
+        return yaw.getText().toString();
     }
 
 }
