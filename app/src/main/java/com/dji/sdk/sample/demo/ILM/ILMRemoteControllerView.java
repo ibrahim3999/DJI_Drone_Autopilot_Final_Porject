@@ -38,15 +38,16 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
 
     private void init(Context context) {
         setClickable(true);
+        //<<=====================Status Bar View==========================>>//
+        statusBar = new ILMStatusBar(context);
+        addView(statusBar);
+        //<<==============================================================>>//
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.view_ilm_remote_controller, this, true);
         initUI();
     }
 
     private void initUI() {
-        //<<==========================Status Bar==========================>>//
-        statusBar = new ILMStatusBar(context);
-        addView(statusBar);
         //<<==========================CSV Log==========================>>//
         csvLog = new ILMCSVLog(context, statusBar);
         csvLog.createLogBrain();
