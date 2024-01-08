@@ -19,17 +19,16 @@ import org.osmdroid.views.overlay.compass.CompassOverlay;
 
 import java.util.ArrayList;
 
-public class ILMMapController {
+public class ILMMap {
     private final MapView mapView;
     private final Context context;
 
-    public ILMMapController(Context context, MapView mapView) {
+    public ILMMap(Context context, MapView mapView) {
         this.mapView = mapView;
         this.context = context;
-        this.initMap();
     }
 
-    private void initMap() {
+    protected void initMap() {
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
 
         mapView.setTileSource(TileSourceFactory.MAPNIK);

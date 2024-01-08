@@ -8,38 +8,27 @@ import org.osmdroid.views.MapView;
 
 import android.app.Service;
 import android.view.LayoutInflater;
-import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 
 import com.dji.sdk.sample.internal.controller.DJISampleApplication;
 import com.dji.sdk.sample.internal.controller.MainActivity;
-import com.dji.sdk.sample.internal.utils.ModuleVerificationUtil;
+
 import com.dji.sdk.sample.internal.utils.VideoFeedView;
 import com.dji.sdk.sample.internal.view.PresentableView;
-
-import dji.sdk.camera.VideoFeeder;
-import dji.sdk.codec.DJICodecManager;
-import dji.sdk.flightcontroller.FlightController;
 
 public class ILMRemoteControllerView extends RelativeLayout implements View.OnClickListener, PresentableView {
     private MapView mapView;
     private Context context;
-    private Button goTobtn;
-    private Button stopbtn;
-    private Button landbtn;
-    private SurfaceView surfaceView;
     private VideoFeedView videoFeedView;
     private View coverView;
-    private VideoFeeder.PhysicalSourceListener sourceListener;
-    protected DJICodecManager codecManager = null;
-    private ILMMapController mapController;
-    private ILMVideoController videoController;
+    private ILMMap mapController;
+    private ILMVideo videoController;
     private ILMStatusBar statusBar;
     private ILMCSVLog csvLog;
+    private ILMButtons buttons;
 
     public ILMRemoteControllerView(Context context) {
         super(context);
@@ -55,51 +44,55 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     }
 
     private void initUI() {
-        stopbtn = findViewById(R.id.btn_ILM_Stop);
-        landbtn = findViewById(R.id.btn_ILM_Land);
-        goTobtn = findViewById(R.id.btn_ILM_GoTo);
-        //<<====================Status Bar====================>>//
+        //<<==========================Status Bar==========================>>//
         statusBar = new ILMStatusBar(context);
         addView(statusBar);
-        //<<====================CSV Log====================>>//
+        //<<==========================CSV Log==========================>>//
         csvLog = new ILMCSVLog(context, statusBar);
         csvLog.createLogBrain();
-        //<<====================Map====================>>//
+        //<<==========================Map==========================>>//
         mapView = findViewById(R.id.mapView_ILM);
-        mapController = new ILMMapController(context, mapView);
-        //<<====================Video====================>>//
+        mapController = new ILMMap(context, mapView);
+        mapController.initMap();
+        //<<==========================Video==========================>>//
         videoFeedView = findViewById(R.id.videoFeedView_ILM);
         coverView = findViewById(R.id.view_ILM_coverView);
-        videoController = new ILMVideoController(videoFeedView, coverView);
+        videoController = new ILMVideo(videoFeedView, coverView);
         videoController.displayVideo();
-        //<<====================Status Bar Updates====================>>//
+        //<<==========================Status Bar Updates==========================>>//
         statusBar.updateDateTime();
         statusBar.updateBattery();
         statusBar.updateSpeed();
         statusBar.updateXYZ();
         statusBar.updateLatitudeLongitude();
         statusBar.updatePitchRollYaw();
-        //<<====================Buttons====================>>//
-        stopbtn.setOnClickListener(this);
-        landbtn.setOnClickListener(this);
-        goTobtn.setOnClickListener(this);
+        //<<==========================Buttons==========================>>//
+        buttons = new ILMButtons(context, this);
+        buttons.takeOffbtn.setOnClickListener(this);
+        buttons.stopbtn.setOnClickListener(this);
+        buttons.landbtn.setOnClickListener(this);
+        buttons.goTobtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        FlightController flightController = ModuleVerificationUtil.getFlightController();
         switch (v.getId()) {
+            case R.id.btn_ILM_Take_Off:
+                buttons.takeOff();
+                break;
             case R.id.btn_ILM_Stop:
+                buttons.stop();
                 break;
             case R.id.btn_ILM_Land:
+                buttons.land();
                 break;
             case R.id.btn_ILM_GoTo:
+                buttons.goTo();
                 break;
             default:
                 break;
         }
     }
-
     @Override
     public int getDescription() {
         return R.string.component_listview_ilm_remote_controller;

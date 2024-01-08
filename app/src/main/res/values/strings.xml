@@ -388,6 +388,7 @@
 
     <string name="uas_view">UAS</string>
     <string name="TEST">test</string>
+    <string name="take_off">Take Off</string>
 
 
 </resources>
