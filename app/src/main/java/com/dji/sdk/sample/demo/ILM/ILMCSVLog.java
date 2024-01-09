@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
 
+import org.opencv.android.OpenCVLoader;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,6 +38,13 @@ public class ILMCSVLog {
             Toast.makeText(context, "CSV file created at " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if (!OpenCVLoader.initDebug()) {
+            // OpenCV initialization failed
+            Toast.makeText(context,"XXXXX", Toast.LENGTH_SHORT);
+        } else {
+            // OpenCV is successfully initialized
+            Toast.makeText(context,"VVVVV", Toast.LENGTH_SHORT);
         }
     }
 

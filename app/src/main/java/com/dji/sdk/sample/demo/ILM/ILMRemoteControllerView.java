@@ -8,7 +8,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-
+import android.widget.Toast;
 
 
 import com.dji.sdk.sample.R;
@@ -18,6 +18,7 @@ import com.dji.sdk.sample.internal.utils.ModuleVerificationUtil;
 import com.dji.sdk.sample.internal.utils.VideoFeedView;
 import com.dji.sdk.sample.internal.view.PresentableView;
 
+import org.opencv.android.OpenCVLoader;
 import org.osmdroid.views.MapView;
 
 import androidx.annotation.NonNull;
