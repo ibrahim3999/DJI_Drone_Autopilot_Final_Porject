@@ -1,0 +1,23 @@
+[
+  {
+    "level": "INFO",
+    "message": "Start JSON generation. Platform version: 21 min SDK version: x86",
+    "file": "C:\\Users\\User\\Desktop\\DJI_Mobile_SDK_Android_V4\\open_cv\\libcxx_helper\\CMakeLists.txt",
+    "tag": "debug|x86",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "JSON \u0027C:\\Users\\User\\Desktop\\DJI_Mobile_SDK_Android_V4\\open_cv\\.cxx\\cmake\\debug\\x86\\android_gradle_build.json\u0027 was up-to-date",
+    "file": "C:\\Users\\User\\Desktop\\DJI_Mobile_SDK_Android_V4\\open_cv\\libcxx_helper\\CMakeLists.txt",
+    "tag": "debug|x86",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "JSON generation completed without problems",
+    "file": "C:\\Users\\User\\Desktop\\DJI_Mobile_SDK_Android_V4\\open_cv\\libcxx_helper\\CMakeLists.txt",
+    "tag": "debug|x86",
+    "diagnosticCode": "UNKNOWN"
+  }
+]

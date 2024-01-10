@@ -1,0 +1,7 @@
+Executable : C:\Users\User\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe
+arguments : 
+-C
+C:\Users\User\Desktop\DJI_Mobile_SDK_Android_V4\open_cv\.cxx\cmake\debug\armeabi-v7a
+opencv_jni_shared
+jvmArgs : 
+

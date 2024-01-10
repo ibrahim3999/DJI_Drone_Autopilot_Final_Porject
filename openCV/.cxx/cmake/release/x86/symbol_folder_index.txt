@@ -1,0 +1,1 @@
+C:\Users\User\Desktop\DJI_Mobile_SDK_Android_V4\openCV\build\intermediates\cmake\release\obj\x86
