@@ -19,7 +19,6 @@ public class BaseCameraView extends FrameLayout implements TextureView.SurfaceTe
 
     private VideoFeeder.VideoDataListener videoDataListener = null;
     private DJICodecManager codecManager = null;
-
     public BaseCameraView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -77,6 +76,7 @@ public class BaseCameraView extends FrameLayout implements TextureView.SurfaceTe
         if (codecManager != null) {
             codecManager.cleanSurface();
             codecManager = null;
+
         }
         return false;
     }

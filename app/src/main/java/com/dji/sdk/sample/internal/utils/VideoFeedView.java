@@ -2,6 +2,7 @@ package com.dji.sdk.sample.internal.utils;
 
 import android.content.Context;
 import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -154,5 +155,14 @@ public class VideoFeedView extends SurfaceView {
             subscription.unsubscribe();
         }
         VideoFeeder.getInstance().destroy();
+    }
+
+
+    public SurfaceHolder getSurfaceHolder() {
+        return surfaceHolder;
+    }
+
+    public SurfaceTexture getSurfaceTexture() {
+        return this.getSurfaceTexture();
     }
 }
