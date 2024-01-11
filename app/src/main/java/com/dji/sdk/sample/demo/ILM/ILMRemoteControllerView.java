@@ -25,7 +25,7 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     private VideoFeedView videoFeedView;
     private View coverView;
     private ILMMap mapController;
-     private ILMVideo videoController;
+    private ILMVideo videoController;
     private ILMStatusBar statusBar;
     private ILMCSVLog csvLog;
     private ILMButtons buttons;
@@ -119,4 +119,3 @@ public class ILMRemoteControllerView extends RelativeLayout implements View.OnCl
     }
 
 }
-

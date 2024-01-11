@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
 
+import org.opencv.android.OpenCVLoader;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
