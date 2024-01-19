@@ -1,3 +1,0 @@
-C:/Users/User/Desktop/DJI_Mobile_SDK_Android_V4/open_cv/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/opencv_jni_shared.dir
-C:/Users/User/Desktop/DJI_Mobile_SDK_Android_V4/open_cv/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/edit_cache.dir
-C:/Users/User/Desktop/DJI_Mobile_SDK_Android_V4/open_cv/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/rebuild_cache.dir
