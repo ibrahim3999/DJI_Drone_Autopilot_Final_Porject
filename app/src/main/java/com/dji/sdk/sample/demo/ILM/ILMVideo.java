@@ -49,8 +49,6 @@ public class ILMVideo extends CameraActivity implements TextureView.SurfaceTextu
         this.videoFeedView = videoFeedView;
         this.videoFeedView.setCoverView(coverView);
 
-
-
     }
 
     public void displayVideo() {
