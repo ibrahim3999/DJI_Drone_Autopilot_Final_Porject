@@ -5,39 +5,44 @@ import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
 
-import org.opencv.android.OpenCVLoader;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ILMCSVLog {
+public class ILM_CSVLog {
     private Context context;
     private FileWriter writer;
     private Timer counterTimer;
-    private ILMStatusBar statusBar;
+    private ILM_StatusBar statusBar;
 
-    public ILMCSVLog(Context context, ILMStatusBar statusBar) {
+    public ILM_CSVLog(Context context, ILM_StatusBar statusBar) {
         this.context = context;
         this.statusBar = statusBar;
     }
 
     private void createCSVFile() {
-        String filename = "ILM_DJI_Drone_Data.csv";
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        String currentDate = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String filename = "ILM_DJI_Drone_Data_" + currentDate + ".csv";
+
+        File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DJI_Drone_Logs");
+        if (!path.exists()) {
+            path.mkdirs();
+        }
         File file = new File(path, filename);
-        boolean isFileExists = file.exists();
 
         try {
             writer = new FileWriter(file, true); // Append mode
-            if (!isFileExists) {
-                writer.append("Date,Time,Battery,Speed,Distance,X,Y,Z,Pitch,Roll,Yaw,Latitude,Longitude,Altitude,Mode").append('\n'); // Header row
-            }
-            Toast.makeText(context, "CSV file created at " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            writer.append("Date,Time,Battery,Speed,Distance,X,Y,Z,Pitch,Roll,Yaw,Latitude,Longitude,Altitude,Mode").append('\n'); // Header row
+            Toast.makeText(context, "SUCCESS: CSV File Created At " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(context, "ERROR: Failed To Create CSV File", Toast.LENGTH_LONG).show();
+
         }
     }
 
@@ -46,12 +51,13 @@ public class ILMCSVLog {
             try {
                 writer.close();
                 writer = null; // Reset the writer
-                Toast.makeText(context, "CSV file closed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "SUCCESS: CSV File Closed.", Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
+                Toast.makeText(context, "ERROR: Closing CSV File: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(context, "No CSV file to close.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "ERROR: No CSV File To Close.", Toast.LENGTH_LONG).show();
         }
     }
 
