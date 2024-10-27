@@ -8,8 +8,7 @@ import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 
 import com.dji.sdk.sample.R;
-import com.dji.sdk.sample.demo.ILM.ILMRemoteControllerView;
-import com.dji.sdk.sample.demo.ILM.ILMStatusBar;
+import com.dji.sdk.sample.demo.ILM.ILM_RemoteControllerView;
 import com.dji.sdk.sample.demo.accessory.AccessoryAggregationView;
 import com.dji.sdk.sample.demo.accessory.AudioFileListManagerView;
 import com.dji.sdk.sample.demo.airlink.RebootWiFiAirlinkView;
@@ -96,7 +95,7 @@ public class DemoListView extends FrameLayout {
         // Build model for ListView
         ListItem.ListBuilder builder = new ListItem.ListBuilder();
         builder.addGroup(R.string.component_listview_ilm_remote_controller, false,
-                new GroupItem(R.string.component_listview_mobile_remote_controller, ILMRemoteControllerView.class), new GroupItem(R.string.component_listview_ilm_status_bar, ILMStatusBar.class));
+                new GroupItem(R.string.component_listview_mobile_remote_controller, ILM_RemoteControllerView.class));
         builder.addGroup(R.string.component_listview_sdk_4_16,
                 false,
                 new GroupItem(R.string.uas_view, UASView.class),
