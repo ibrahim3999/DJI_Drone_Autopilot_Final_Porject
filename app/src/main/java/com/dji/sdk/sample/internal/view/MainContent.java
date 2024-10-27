@@ -35,14 +35,13 @@ import com.dji.sdk.sample.internal.utils.GeneralUtils;
 import com.dji.sdk.sample.internal.utils.ToastUtils;
 import com.squareup.otto.Subscribe;
 
-import org.opencv.android.OpenCVLoader;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
 import dji.common.realname.AppActivationState;
@@ -71,7 +70,7 @@ import dji.sdk.useraccount.UserAccountManager;
 public class MainContent extends RelativeLayout {
 
     public static final String TAG = MainContent.class.getName();
-    private static final String[] REQUIRED_PERMISSION_LIST = new String[] {
+    private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.VIBRATE, // Gimbal rotation
             Manifest.permission.INTERNET, // API requests
             Manifest.permission.ACCESS_WIFI_STATE, // WIFI connected products
@@ -104,14 +103,11 @@ public class MainContent extends RelativeLayout {
     private TextView mTextProduct;
     private TextView mTextModelAvailable;
     private Button mBtnRegisterApp;
-    private Button getmBtnRegisterAppForLDM;
     private Button mBtnOpen;
     private Button mBtnBluetooth;
     private ViewWrapper componentList =
             new ViewWrapper(new DemoListView(getContext()), R.string.activity_component_list);
     private ViewWrapper bluetoothView;
-    private EditText mBridgeModeEditText;
-    private CheckBox mCheckboxFirmware;
     private Handler mHandler;
     private Handler mHandlerUI;
     private HandlerThread mHandlerThread = new HandlerThread("Bluetooth");
@@ -127,6 +123,7 @@ public class MainContent extends RelativeLayout {
     private AppActivationState.AppActivationStateListener appActivationStateListener;
     private boolean isregisterForLDM = false;
     private Context mContext;
+
     public MainContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
@@ -150,11 +147,8 @@ public class MainContent extends RelativeLayout {
         mTextModelAvailable = (TextView) findViewById(R.id.text_model_available);
         mTextProduct = (TextView) findViewById(R.id.text_product_info);
         mBtnRegisterApp = (Button) findViewById(R.id.btn_registerApp);
-        getmBtnRegisterAppForLDM = (Button) findViewById(R.id.btn_registerAppForLDM);
         mBtnOpen = (Button) findViewById(R.id.btn_open);
-        mBridgeModeEditText = (EditText) findViewById(R.id.edittext_bridge_ip);
         mBtnBluetooth = (Button) findViewById(R.id.btn_bluetooth);
-        mCheckboxFirmware = (CheckBox) findViewById(R.id.checkbox_firmware);
 
         //mBtnBluetooth.setEnabled(false);
 
@@ -166,17 +160,10 @@ public class MainContent extends RelativeLayout {
                 checkAndRequestPermissions();
             }
         });
-        getmBtnRegisterAppForLDM.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isregisterForLDM = true;
-                checkAndRequestPermissions();
-            }
-        });
+
         mBtnOpen.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (GeneralUtils.isFastDoubleClick()) {
                     return;
                 }
@@ -198,59 +185,13 @@ public class MainContent extends RelativeLayout {
                 DJISampleApplication.getEventBus().post(bluetoothView);
             }
         });
-        mBridgeModeEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || event != null
-                        && event.getAction() == KeyEvent.ACTION_DOWN
-                        && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    if (event != null && event.isShiftPressed()) {
-                        return false;
-                    } else {
-                        // the user is done typing.
-                        handleBridgeIPTextChange();
-                    }
-                }
-                return false; // pass on to other listeners.
-            }
-        });
-        mBridgeModeEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s != null && s.toString().contains("\n")) {
-                    // the user is done typing.
-                    // remove new line characcter
-                    final String currentText = mBridgeModeEditText.getText().toString();
-                    mBridgeModeEditText.setText(currentText.substring(0, currentText.indexOf('\n')));
-                    handleBridgeIPTextChange();
-                }
-            }
-        });
         ((TextView) findViewById(R.id.text_version)).setText(getResources().getString(R.string.sdk_version,
                 DJISDKManager.getInstance().getRegistrationSDKVersion()
                         + " Debug:"
                         + GlobalConfig.DEBUG));
     }
 
-    private void handleBridgeIPTextChange() {
-        // the user is done typing.
-        final String bridgeIP = mBridgeModeEditText.getText().toString();
-        DJISDKManager.getInstance().enableBridgeModeWithBridgeAppIP(bridgeIP);
-        if (!TextUtils.isEmpty(bridgeIP)) {
-            ToastUtils.setResultToToast("BridgeMode ON!\nIP: " + bridgeIP);
-        }
-    }
 
     @Override
     protected void onAttachedToWindow() {
@@ -295,7 +236,7 @@ public class MainContent extends RelativeLayout {
     }
 
     private void sendDelayMsg(int msg, long delayMillis) {
-        if (mHandler == null){
+        if (mHandler == null) {
             return;
         }
 
@@ -331,7 +272,7 @@ public class MainContent extends RelativeLayout {
         if (TextUtils.isEmpty(version)) {
             mTextModelAvailable.setText("Firmware version:N/A"); //Firmware version:
         } else {
-            mTextModelAvailable.setText("Firmware version:"+version); //"Firmware version: " +
+            mTextModelAvailable.setText("Firmware version:" + version); //"Firmware version: " +
             removeFirmwareVersionListener();
         }
     }
@@ -351,7 +292,7 @@ public class MainContent extends RelativeLayout {
     private void refreshSDKRelativeUI() {
         mProduct = DJISampleApplication.getProductInstance();
         Log.d(TAG, "mProduct: " + (mProduct == null ? "null" : "unnull"));
-        if (null != mProduct ) {
+        if (null != mProduct) {
             if (mProduct.isConnected()) {
                 mBtnOpen.setEnabled(true);
                 String str = mProduct instanceof Aircraft ? "DJIAircraft" : "DJIHandHeld";
@@ -366,17 +307,17 @@ public class MainContent extends RelativeLayout {
                 } else {
                     mTextProduct.setText(R.string.product_information);
                 }
-            } else if (mProduct instanceof Aircraft){
+            } else if (mProduct instanceof Aircraft) {
                 Aircraft aircraft = (Aircraft) mProduct;
                 if (aircraft.getRemoteController() != null && aircraft.getRemoteController().isConnected()) {
                     mTextConnectionStatus.setText(R.string.connection_only_rc);
                     mTextProduct.setText(R.string.product_information);
-                    //mBtnOpen.setEnabled(false);
+                    mBtnOpen.setEnabled(false);
                     mTextModelAvailable.setText("Firmware version:N/A");
                 }
             }
         } else {
-            //mBtnOpen.setEnabled(false);
+            mBtnOpen.setEnabled(false);
             mTextProduct.setText(R.string.product_information);
             mTextConnectionStatus.setText(R.string.connection_loose);
             mTextModelAvailable.setText("Firmware version:N/A");
@@ -398,7 +339,7 @@ public class MainContent extends RelativeLayout {
             };
             firmwareKey = ProductKey.create(ProductKey.FIRMWARE_PACKAGE_VERSION);
             if (KeyManager.getInstance() != null) {
-                KeyManager.getInstance().addListener(firmwareKey, firmwareVersionUpdater );
+                KeyManager.getInstance().addListener(firmwareKey, firmwareVersionUpdater);
             }
             hasStartedFirmVersionListener = true;
         }
@@ -489,16 +430,11 @@ public class MainContent extends RelativeLayout {
                 @Override
                 public void run() {
                     ToastUtils.setResultToToast(mContext.getString(R.string.sdk_registration_doing_message));
-                    //if we hope the Firmware Upgrade module could access the network under LDM mode, we need call the setModuleNetworkServiceEnabled()
-                    //method before the registerAppForLDM() method
-                    if (mCheckboxFirmware.isChecked()) {
-                        DJISDKManager.getInstance().getLDMManager().setModuleNetworkServiceEnabled(new LDMModule.Builder().moduleType(
-                                LDMModuleType.FIRMWARE_UPGRADE).enabled(true).build());
-                    } else {
-                        DJISDKManager.getInstance().getLDMManager().setModuleNetworkServiceEnabled(new LDMModule.Builder().moduleType(
-                                LDMModuleType.FIRMWARE_UPGRADE).enabled(false).build());
-                    }
-                    if(isregisterForLDM) {
+
+                    DJISDKManager.getInstance().getLDMManager().setModuleNetworkServiceEnabled(new LDMModule.Builder().moduleType(
+                            LDMModuleType.FIRMWARE_UPGRADE).enabled(false).build());
+
+                    if (isregisterForLDM) {
                         DJISDKManager.getInstance().registerAppForLDM(mContext.getApplicationContext(), new DJISDKManager.SDKManagerCallback() {
                             @Override
                             public void onRegister(DJIError djiError) {
@@ -512,11 +448,13 @@ public class MainContent extends RelativeLayout {
                                 Log.v(TAG, djiError.getDescription());
                                 hideProcess();
                             }
+
                             @Override
                             public void onProductDisconnect() {
                                 Log.d(TAG, "onProductDisconnect");
                                 notifyStatusChange();
                             }
+
                             @Override
                             public void onProductConnect(BaseProduct baseProduct) {
                                 Log.d(TAG, String.format("onProductConnect newProduct:%s", baseProduct));
@@ -535,8 +473,7 @@ public class MainContent extends RelativeLayout {
                                 if (newComponent != null) {
                                     newComponent.setComponentListener(mDJIComponentListener);
 
-                                    if(componentKey == BaseProduct.ComponentKey.FLIGHT_CONTROLLER)
-                                    {
+                                    if (componentKey == BaseProduct.ComponentKey.FLIGHT_CONTROLLER) {
                                         showDBVersion();
                                     }
                                 }
@@ -562,9 +499,9 @@ public class MainContent extends RelativeLayout {
                                 }
                                 lastProcess = process;
                                 showProgress(process);
-                                if (process % 25 == 0){
+                                if (process % 25 == 0) {
                                     ToastUtils.setResultToToast("DB load process : " + process);
-                                }else if (process == 0){
+                                } else if (process == 0) {
                                     ToastUtils.setResultToToast("DB load begin");
                                 }
                             }
@@ -584,11 +521,13 @@ public class MainContent extends RelativeLayout {
                                 Log.v(TAG, djiError.getDescription());
                                 hideProcess();
                             }
+
                             @Override
                             public void onProductDisconnect() {
                                 Log.d(TAG, "onProductDisconnect");
                                 notifyStatusChange();
                             }
+
                             @Override
                             public void onProductConnect(BaseProduct baseProduct) {
                                 Log.d(TAG, String.format("onProductConnect newProduct:%s", baseProduct));
@@ -607,8 +546,7 @@ public class MainContent extends RelativeLayout {
                                 if (newComponent != null) {
                                     newComponent.setComponentListener(mDJIComponentListener);
 
-                                    if(componentKey == BaseProduct.ComponentKey.FLIGHT_CONTROLLER)
-                                    {
+                                    if (componentKey == BaseProduct.ComponentKey.FLIGHT_CONTROLLER) {
                                         showDBVersion();
                                     }
                                 }
@@ -634,9 +572,9 @@ public class MainContent extends RelativeLayout {
                                 }
                                 lastProcess = process;
                                 showProgress(process);
-                                if (process % 25 == 0){
+                                if (process % 25 == 0) {
                                     ToastUtils.setResultToToast("DB load process : " + process);
-                                }else if (process == 0){
+                                } else if (process == 0) {
                                     ToastUtils.setResultToToast("DB load begin");
                                 }
                             }
@@ -648,7 +586,7 @@ public class MainContent extends RelativeLayout {
         }
     }
 
-    private void showProgress(final int process){
+    private void showProgress(final int process) {
         mHander.post(new Runnable() {
             @Override
             public void run() {
@@ -658,7 +596,7 @@ public class MainContent extends RelativeLayout {
         });
     }
 
-    private void showDBVersion(){
+    private void showDBVersion() {
         mHander.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -675,10 +613,10 @@ public class MainContent extends RelativeLayout {
                     }
                 });
             }
-        },3000);
+        }, 3000);
     }
 
-    private void hideProcess(){
+    private void hideProcess() {
         mHander.post(new Runnable() {
             @Override
             public void run() {
